@@ -71,7 +71,11 @@ func astarApllication(tab [][]int, at Noeu, togo Noeu) Noeu  {
   tmp.x = at.x
   tmp.y = at.y
   for tmp.x  != togo.x && tmp.y != togo.y {
-     u := calculeHeu(deplacement,  tmp, togo)
+     a := calculeHeu(deplacement,  tmp, togo)
+     b:= calculeHeu(deplacement,  tmp, togo)
+     c := calculeHeu(deplacement,  tmp, togo)
+     d := calculeHeu(deplacement,  tmp, togo)
+
      deplacement++
   }
   return at

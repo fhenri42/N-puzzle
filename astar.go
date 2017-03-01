@@ -184,7 +184,7 @@ func calculeManhattan(open state, goodTab[][]int) int {
 
   var x = 0
   var res = 0
-  for x < len(goodTab[x]) {
+  for x < len(goodTab) {
     res += getDist(x, open, goodTab)
     x++
   }

@@ -15,10 +15,13 @@ func main () {
  tabGood = append(tabGood, tabx1)
  tabGood = append(tabGood, tabx2)
 
+// 4 2 5
+// 1 3 7
+ //6 8 0
  tab :=[][]int{}
- tab0 := []int{1, 2, 0}
- tab1 := []int{7, 5, 3}
- tab2 := []int{8, 6, 4}
+ tab0 := []int{4, 2, 5}
+ tab1 := []int{1, 3, 7}
+ tab2 := []int{6, 8, 0}
  tab = append(tab, tab0)
  tab = append(tab, tab1)
  tab = append(tab, tab2)

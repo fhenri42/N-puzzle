@@ -14,6 +14,41 @@ func check(e error) {
     }
 }
 
+func checkTabInit(tabInit [][]int, len int) {
+  var i = 0
+  var j = 0
+  var k = 0
+  for i < len {
+    for j < len {
+      if tabInit[i][j] >= len * len {
+        fmt.Print("File is not well formated4\n")
+        os.Exit(3)
+      }
+      tmp := tabInit[i][j]
+      l := i
+      m := j
+      for l < len {
+          for m < len {
+            if tabInit[l][m] == tmp {
+              k += 1
+            }
+            if k > 1 {
+              fmt.Print("File is not well formated5\n")
+              os.Exit(3)
+            }
+            m++
+          }
+          m = 0
+        l++
+      }
+      k = 0
+      j++
+    }
+    j = 0
+    i++
+  }
+}
+
 func finalTab(len int) ([][]int) {
   var i = 0
   var j = 0
@@ -91,11 +126,12 @@ func parsing(str []string) ([][]int, [][]int, int) {
     k++
     i++
   }
+  checkTabInit(tabInit, length)
   return tabInit, tabFinal, length
 }
 
 func main () {
-    dat, err := ioutil.ReadFile("/tmp/npuzzle-4-u-test.txt")
+    dat, err := ioutil.ReadFile("./npuzzle-4-u-test.txt")
     if err != nil {
       fmt.Print("No such file or directory")
       os.Exit(3)

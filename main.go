@@ -70,7 +70,7 @@ func finalTab(len int) ([][]int) {
   tabFinal[i][j] = 1
   for k < len * len - 2 {
     count += 1
-    if j < len - 1 && tabFinal[i][j + 1] == 0 && tabFinal[i + 1][j + 1] == 0 {
+    if j < len - 1 && tabFinal[i][j + 1] == 0 && (i == 0 || tabFinal[i - 1][j] != 0) {
       j++
       tabFinal[i][j] += count
     } else if i < len - 1 && tabFinal[i + 1][j] == 0 {
@@ -83,7 +83,6 @@ func finalTab(len int) ([][]int) {
       i--
       tabFinal[i][j] += count
     }
-    //fmt.Printf("\nTOUR\n%d\n%d", i, j)
     k++
   }
   return tabFinal
@@ -131,17 +130,18 @@ func parsing(str []string) ([][]int, [][]int, int) {
 }
 
 func main () {
-    dat, err := ioutil.ReadFile("./npuzzle-4-u-test.txt")
+  if 2 == len(os.Args) {
+    dat, err := ioutil.ReadFile(os.Args[1])
     if err != nil {
-      fmt.Print("No such file or directory")
+      fmt.Print("No such file or directory\n")
       os.Exit(3)
     }
     check(err)
 
     datString := string(dat)
     datSplitted := strings.Split(datString, "\n")
-    _, erreur := strconv.Atoi(datSplitted[1]);
-    if datSplitted != nil && datSplitted[0][0] != '#' || erreur != nil {
+    check, erreur := strconv.Atoi(datSplitted[1]);
+    if datSplitted != nil && datSplitted[0][0] != '#' || erreur != nil || len(datSplitted) != check + 3 {
         fmt.Printf("File is not well formated\n")
         os.Exit(3)
     }
@@ -156,6 +156,9 @@ func main () {
     fmt.Printf("\nSecond:\n%d\n%d\n%d\n", tabFinal[1][0], tabFinal[1][1], tabFinal[1][2])
     fmt.Printf("\nThird:\n%d\n%d\n%d\n", tabFinal[2][0], tabFinal[2][1], tabFinal[2][2])
     os.Exit(3)
+  } else {
+    fmt.Print("You need only one args.\n")
+  }
 //  astar(tab, len)
   return
 }

@@ -30,7 +30,7 @@ type state struct {
   index int
   len int
   look bool
-  //  parent *state
+  parent *state
   pos Noeu
 }
 
@@ -74,27 +74,29 @@ func MoveGrid(best state) ([][][]int, int) {
   var t = 0
   var count = 0
   tmp := best.pos
-  //fmt.Printf("parent = %d\n", best.parent)
-  for t < 5 {
 
-    if t == 0 && tmp.x - 1 > 0 {
-      a := deplacementUp(best.grid, tmp)
-      maxTab[count] = a
+  for t < 4 {
+
+    if t == 0 && (tmp.x - 1 > 0  || (best.parent != nil && best.parent.pos.x == best.parent.pos.x - 1)){
+      fmt.Printf("A\n")
+      best.grid = deplacementUp(best.grid, tmp)
+      maxTab[count] = best.grid
+
       count++
-    }
-    if  t == 1  && tmp.y + 1 < best.len {
-      b := deplacementRight(best.grid, tmp)
-      maxTab[count] = b
+    } else if  t == 1  && (tmp.y + 1 < best.len  || (best.parent != nil && best.parent.pos.y == best.parent.pos.y + 1)){
+      fmt.Printf("B\n")
+      best.grid = deplacementRight(best.grid, tmp)
+      maxTab[count] = best.grid
       count++
-    }
-    if t == 2  && tmp.x + 1 < best.len{
-      c := deplacementDown(best.grid, tmp)
-      maxTab[count] = c
+    } else if t == 2  && (tmp.x + 1 < best.len ||  (best.parent != nil && best.parent.pos.x == best.parent.pos.x + 1)){
+      fmt.Printf("C\n")
+      best.grid = deplacementDown(best.grid, tmp)
+      maxTab[count] = best.grid
       count++
-    }
-    if t == 3  && tmp.y - 1 > 0{
-      d := deplacementLeft(best.grid, tmp)
-      maxTab[count] = d
+    } else if t == 3  && (tmp.y - 1 > 0  || (best.parent != nil && best.parent.pos.y == best.parent.pos.y - 1)){
+      fmt.Printf("D\n")
+      best.grid = deplacementLeft(best.grid, tmp)
+      maxTab[count] = best.grid
       count++
     }
     t++
@@ -139,9 +141,9 @@ func checKGood( tab [][]int, goodTab[][]int, len int) bool  {
 }
 func shouldBe(tab [][]int, len int) Noeu  {
   var x = 0
-  var y = 0
   var tmp Noeu
   for x < len {
+    var y = 0
     for y < len {
       if tab[x][y] == 0 {
         tmp.x = x
@@ -201,47 +203,49 @@ func astar(tab [][]int, goodTab [][]int, len int) int  {
   openList[0].h = 0
   openList[0].g = 0
   openList[0].len = len
+  openList[0].parent = nil
   openList[0].index = 0
-  openList[0].pos.x = 0
-  openList[0].pos.y = 0
+  openList[0].pos = shouldBe(tab, len)
   openList[0].look = false
   var succes = false
 
-  closeList := make([]state, 1)
+  closeList := make([]state, 0)
 
   //  aff(tab, len)
   //for succes != true {
-  for _, open := range openList {
-    fmt.Printf("%d\n",open)
+  for index, open := range openList {
     best := findBest(openList)
-    fmt.Printf("best = %d\n",best.index)
+    fmt.Printf("best = %d\n", best)
     if checKGood(best.grid, goodTab, len) == true {
       succes = true
       } else {
-        //  openList = append(openList[:0], openList[1:])
+      fmt.Printf("index =%d\n",index)
+//        openList = append(openList[:index], openList[index + 1])
+  //0    fmt.Printf("openList =%d\n",openList)
         closeList = append(closeList, best)
+        //not good
         move, cr := MoveGrid(best)
         var l = 0
         for l < cr {
 
           fmt.Printf("move = %d\n",move[l])
           find := inList(openList, move[l])
-
+          fmt.Printf("find = %d\n",find)
           if find.look == false  {
             var newList state
-            tmp := shouldBe(best.grid, best.len)
+            tmp := shouldBe(move[l], best.len)
             fmt.Printf("tmp = %d\n",tmp)
-            newList.grid = open.grid
-            //TODO change h + g
-            newList.h = calculeManhattan(open, goodTab)
-            newList.g = open.g + 1
-            newList.len = open.len
+            newList.grid = move[l]
+            //TODO change il manque lhistoire de parent
+            newList.parent = &best
+            newList.g = best.g + 1
+            newList.len = best.len
             newList.look = false
             newList.index = open.index + 1
             newList.pos.x = tmp.x
             newList.pos.y = tmp.y
+            newList.h = calculeManhattan(newList, goodTab)
             openList = append(openList, newList)
-
             } else {
               fmt.Printf("maison \n")
               if find.g + find.h > find.h + best.g + 1 {

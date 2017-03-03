@@ -29,8 +29,7 @@ type state struct {
   g int
   index int
   len int
-  look bool
-  parent *state
+  parent Noeu
   pos Noeu
 }
 
@@ -78,7 +77,7 @@ func deplacementRight(tab [][]int, cur Noeu )  [][]int{
     }
     x++
   }
-
+//fmt.Printf("cury == %d",tmp[cur.x][cur.y])
   tmp[cur.x][cur.y] = tmp[cur.x][cur.y + 1]
   tmp[cur.x][cur.y + 1] = 0
   return tmp
@@ -124,41 +123,64 @@ func deplacementDown(tab [][]int, cur Noeu )  [][]int{
   return tmp
 }
 
+//TODO sa bug ici toujour !!!!!
 func MoveGrid(best state) ([][][]int, int) {
   maxTab := make([][][]int, 5)
   var t = 0
   var count = 0
   tmp := best.pos
+  fmt.Printf("tmp == %d\n", tmp)
+  fmt.Printf("paren == %d\n",best.parent)
   for t < 4 {
 
-    if t == 0 && (tmp.x - 1 > 0  || (best.parent != nil && best.parent.pos.x == best.parent.pos.x - 1)){
-      fmt.Printf("A\n")
+    if t == 0 && (tmp.x - 1 > 0  || (best.parent.x != -2 && best.parent.y != -2 && best.parent.x != best.pos.x - 1)){
+      fmt.Printf("A")
       a := deplacementUp(best.grid, tmp)
       maxTab[count] = a
       count++
-      } else if  t == 1  && (tmp.y + 1 < best.len  || (best.parent != nil && best.parent.pos.y == best.parent.pos.y + 1)){
-        fmt.Printf("B\n")
+      } else if  t == 1  && (tmp.y + 1 < best.len || (best.parent.x != -2 && best.parent.y != -2 && best.parent.y != best.pos.y + 1)){
+        fmt.Printf("B")
         b := deplacementRight(best.grid, tmp)
         maxTab[count] = b
         count++
-        } else if t == 2  && (tmp.x + 1 < best.len ||  (best.parent != nil && best.parent.pos.x == best.parent.pos.x + 1)){
-          fmt.Printf("C\n")
+        }  else  if t == 2  && (tmp.x + 1 < best.len ||  (best.parent.x != -2 && best.parent.y != -2 && best.parent.x != best.pos.x + 1)){
+          fmt.Printf("C")
           c := deplacementDown(best.grid, tmp)
           maxTab[count] = c
           count++
-          } else if t == 3  && (tmp.y - 1 > 0  || (best.parent != nil && best.parent.pos.y == best.parent.pos.y - 1)){
-            fmt.Printf("D\n")
+          } else if t == 3  && (tmp.y - 1 > 0  || (best.parent.x != -2 && best.parent.y != -2  && best.parent.y != best.pos.y - 1)){
+            fmt.Printf("D")
             d := deplacementLeft(best.grid, tmp)
             maxTab[count] = d
             count++
           }
           t++
-
         }
         return maxTab, count
       }
 
-      func inList(aList []state, bList [][]int)  state {
+      func inList(aList []state, bList [][]int) int {
+
+        if len(aList) == 0  {
+          return  0
+        }
+        for _,list := range aList {
+          var x = 0
+          for x < len(list.grid) {
+            var y = 0
+            for y < len(list.grid[x]) {
+              if list.grid[x][y] != bList[x][y] {
+                return 0
+              }
+              y++
+            }
+            x++
+          }
+        }
+        return 1
+      }
+
+      func inListToFind(aList []state, bList [][]int) state {
 
         for _,list := range aList {
           var x = 0
@@ -166,8 +188,6 @@ func MoveGrid(best state) ([][][]int, int) {
             var y = 0
             for y < len(list.grid[x]) {
               if list.grid[x][y] != bList[x][y] {
-                list.look = false
-                fmt.Printf("in the true\n")
                 return list
               }
               y++
@@ -175,10 +195,9 @@ func MoveGrid(best state) ([][][]int, int) {
             x++
           }
         }
-        aList[0].look = true
         return aList[0]
-
       }
+
       func checKGood( tab [][]int, goodTab[][]int, len int) bool  {
         var x = 0
         for x < len {
@@ -189,6 +208,7 @@ func MoveGrid(best state) ([][][]int, int) {
           }
           x++
         }
+        fmt.Printf("checKGood")
         return true
       }
       func shouldBe(tab [][]int, len int) Noeu  {
@@ -224,6 +244,9 @@ func MoveGrid(best state) ([][][]int, int) {
           }
           x++
         }
+        fmt.Printf("baddddddddd")
+        tmp.y = 0
+        tmp.x = 0
         return tmp
       }
 
@@ -247,6 +270,18 @@ func MoveGrid(best state) ([][][]int, int) {
         return res
       }
 
+      func removeList(openList []state, index int)[]state  {
+        var x = 0
+        newList := make([]state, 0)
+        for x < len(openList) {
+          if x != index {
+            newList = append(newList, openList[x])
+          }
+          x++
+        }
+        return newList
+      }
+
       func astar(tab [][]int, goodTab [][]int, len int) int  {
 
         var cal = 0
@@ -254,74 +289,66 @@ func MoveGrid(best state) ([][][]int, int) {
         openList[0].grid  = tab
         openList[0].g = 0
         openList[0].len = len
-        openList[0].parent = nil
+        openList[0].parent.x = -2
+        openList[0].parent.y = -2
         openList[0].index = 0
         openList[0].pos = shouldBe(tab, len)
-        openList[0].look = false
         openList[0].h = calculeManhattan(openList[0], goodTab)
         var p = 0
         var succes = false
 
         closeList := make([]state, 0)
 
-        //    for succes != true {
+        //  for succes != true {
         for p < 5 {
+          fmt.Printf("p== %d\n",p);
+          p++;
+        //  fmt.Printf("openList == %d\n",openList);
           for index, open := range openList {
-            best := findBest(openList)
 
+            best := findBest(openList)
             aff(best.grid, len)
-            if p == 5 { succes = true }
-            fmt.Printf("p== %d\n",p); p++;
 
             if checKGood(best.grid, goodTab, len) == true {
               succes = true
-              fmt.Printf("oeuoeuoeu")
-            return 9
+              fmt.Printf("SUCCESSE")
               } else {
-                fmt.Printf("index =%d\n",index)
-                fmt.Printf("openList =%d\n",openList)
-
-
-                openList = append(openList[:index], openList[index])
-                fmt.Printf("openList =%d\n",openList)
-                closeList = append(closeList, best)
-
+                openList = removeList(openList, index)
                 move, cr := MoveGrid(best)
+              //  fmt.Printf("closeList == %d\n", closeList)
+                closeList = append(closeList, best)
+              //  fmt.Printf("closeList == %d\n", closeList)
                 var l = 0
+
                 for l < cr {
 
-                  fmt.Printf("move = %d\n",move[l])
-                  find := inList(openList, move[l])
-                  fmt.Printf("find = %d\n",find)
-                  if find.look == false  {
-                    fmt.Printf("in the false = %d\n")
+                  err := inList(openList, move[l])
+                  err1 := inList(closeList, move[l])
+                  fmt.Printf("move ==%d",move[l])
 
-                    tmp := shouldBe(move[l], best.len)
-                    fmt.Printf("tmp = %d\n",tmp)
+                  if err == 0 && err1 == 0  {
 
                     var newList state
                     newList.grid = move[l]
-                    newList.parent = &best
+                    newList.parent = best.pos
                     newList.g = best.g + 1
                     newList.len = best.len
-                    newList.look = false
                     newList.index = open.index + 1
-                    newList.pos.x = tmp.x
-                    newList.pos.y = tmp.y
+                    newList.pos = shouldBe(move[l],best.len)
                     newList.h = calculeManhattan(newList, goodTab)
-
-                    fmt.Printf("h ==== %d",newList.h)
-
                     openList = append(openList, newList)
+
                     } else {
-                      fmt.Printf("maison \n")
+                      find := inListToFind(closeList, move[l])
+                      fmt.Printf("maison=  find.g = %d find.h = %d && find.h = %d ,best.g = %d + 1:",find.g, find.h, find.h, best.g )
+
                       if find.g + find.h > find.h + best.g + 1 {
                         find.g = find.h + best.g + 1
                         fmt.Printf("maison1 \n")
-                        find2 :=  inList(closeList, find.grid)
-                        if find2.look == false {
+                        err3 :=  inList(closeList, find.grid)
+                        if err3 != 0 {
                           fmt.Printf("maison2 \n")
-                          closeList = append(closeList[:0], closeList[find.index])
+                          closeList = removeList(closeList, find.index)
                           openList = append(openList, find)
                         }
                       }

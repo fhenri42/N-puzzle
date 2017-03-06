@@ -30,7 +30,6 @@ func deplacementUp(tab [][]int, cur Noeu, parent Noeu)  [][]int {
     tmp[0][0] = -4
     return  tmp
   }
-  //fmt.Printf("A")
   tmp[cur.x][cur.y] = tmp[cur.x - 1][cur.y]
   tmp[cur.x - 1][cur.y] = 0
   return tmp
@@ -43,7 +42,6 @@ func deplacementRight(tab [][]int, cur Noeu, parent Noeu,len int)  [][]int{
     tmp[0][0] = -4
     return  tmp
   }
-//  fmt.Printf("B")
   tmp[cur.x][cur.y] = tmp[cur.x][cur.y + 1]
   tmp[cur.x][cur.y + 1] = 0
   return tmp
@@ -56,7 +54,6 @@ func deplacementLeft(tab [][]int, cur Noeu, parent Noeu)  [][]int{
     tmp[0][0] = -4
     return tmp
   }
-//  fmt.Printf("D")
   tmp[cur.x][cur.y] = tmp[cur.x][cur.y - 1]
   tmp[cur.x][cur.y - 1] = 0
 
@@ -70,7 +67,6 @@ func deplacementDown(tab [][]int, cur Noeu, parent Noeu,len int)  [][]int{
     tmp[0][0] = -4
     return  tmp
   }
-//  fmt.Printf("C")
   tmp[cur.x][cur.y] = tmp[cur.x + 1][cur.y]
   tmp[cur.x + 1][cur.y] = 0
   return tmp
@@ -81,8 +77,7 @@ func MoveGrid(best state) ([][][]int, int) {
   var t = 0
   var count = 0
   tmp := best.pos
-//  fmt.Printf("tmp == %d, %d\n", tmp.x, tmp.y)
-//  fmt.Printf("paren == %d, %d\n",best.parent.x, best.parent.y)
+  
   for t < 4 {
 
     if t == 0 {

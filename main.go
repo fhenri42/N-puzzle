@@ -19,15 +19,14 @@ func main () {
 // 1 3 7
  //6 8 0
 
-//  4
-//  8  0 10 14
-// 13  4  1 11
-//  2  3 15  6
-// 12  5  9  7
+
+//5 3 2
+//6 0 8
+//4 1 7
  tab :=[][]int{}
- tab0 := []int{4, 2, 5}
- tab1 := []int{1, 3, 7}
- tab2 := []int{6, 8, 0}
+ tab0 := []int{5, 3, 2}
+ tab1 := []int{6, 0, 8}
+ tab2 := []int{4, 1, 7}
  tab = append(tab, tab0)
  tab = append(tab, tab1)
  tab = append(tab, tab2)

@@ -177,12 +177,10 @@ func findBest(sta []state) state  {
         for _,_ = range openList {
         k++
         }
-      fmt.Printf("indexShouldBe = %d \n", k)
         return k
       }
       func astar(tab [][]int, goodTab [][]int, len int) int  {
 
-        var cal = 0
         openList := make([]state, 1)
         openList[0].grid  = tab
         openList[0].g = 0
@@ -192,17 +190,15 @@ func findBest(sta []state) state  {
         openList[0].index = 0
         openList[0].pos = shouldBe(tab, len)
         openList[0].h = calculeManhattan(openList[0], goodTab)
-        var p = 0
         var succes = false
 
         closeList := make([]state, 0)
 
-        //  for succes != true {
-        for p < 100 {
-          fmt.Printf("p== %d\n",p);
-          p++;
+          for succes != true {
+
+
         //  fmt.Printf("openList == %d\n",openList);
-          for _, open := range openList {
+          for _, _ = range openList {
 
             best := findBest(openList)
   //          fmt.Printf("best ==%d\n", best)
@@ -225,7 +221,7 @@ func findBest(sta []state) state  {
 
                 for l < cr {
 
-                  fmt.Printf("move ==%d\n",move[l])
+        //          fmt.Printf("move ==%d\n",move[l])
                   err := inList(openList, move[l])
                   err1 := inList(closeList, move[l])
 
@@ -244,27 +240,14 @@ func findBest(sta []state) state  {
 
                     } else {
                       find := inListToFind(closeList, move[l])
-                      fmt.Printf("maison=  find.g = %d find.h = %d && find.h = %d ,best.g = %d + 1:",find.g, find.h, find.h, best.g )
+          //            fmt.Printf("maison=  find.g = %d find.h = %d && find.h = %d ,best.g = %d + 1:",find.g, find.h, find.h, best.g )
 
                       if find.g + find.h > find.h + best.g + 1 {
                         find.g = find.h + best.g + 1
-                        fmt.Printf("maison1 \n")
+                  //      fmt.Printf("maison1 \n")
                         err3 :=  inList(closeList, find.grid)
                         if err3 != 0 {
-                          fmt.Printf("maison2 \n")
-                          fmt.Printf("maison2 \n")
-                          fmt.Printf("maison2 \n")
-                          fmt.Printf("maison2 \n")
-                          fmt.Printf("maison2 \n")
-                          fmt.Printf("maison2 \n")
-                          fmt.Printf("maison2 \n")
-                          fmt.Printf("maison2 \n")
-                          fmt.Printf("maison2 \n")
-                          fmt.Printf("maison2 \n")
-                          fmt.Printf("maison2 \n")
-                          fmt.Printf("maison2 \n")
-                          fmt.Printf("maison2 \n")
-                          fmt.Printf("maison2 \n")
+                //          fmt.Printf("maison2 \n")
                           closeList = removeList(closeList, find.index)
                           openList = append(openList, find)
                         }
@@ -273,11 +256,8 @@ func findBest(sta []state) state  {
                     l++
                   }
                 }
-                fmt.Printf("h = %d\n", open.h)
-                //      }
               }
             }
-            fmt.Printf("nb of calcule = %d, %d\n", cal, succes)
             return 0
           }
 

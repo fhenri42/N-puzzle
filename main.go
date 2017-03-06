@@ -130,6 +130,7 @@ func parsing(str []string) ([][]int, [][]int, int) {
 }
 
 func main () {
+
   if 2 == len(os.Args) {
     dat, err := ioutil.ReadFile(os.Args[1])
     if err != nil {
@@ -155,10 +156,27 @@ func main () {
     fmt.Printf("\nFirst:\n%d\n%d\n%d\n", tabFinal[0][0], tabFinal[0][1], tabFinal[0][2])
     fmt.Printf("\nSecond:\n%d\n%d\n%d\n", tabFinal[1][0], tabFinal[1][1], tabFinal[1][2])
     fmt.Printf("\nThird:\n%d\n%d\n%d\n", tabFinal[2][0], tabFinal[2][1], tabFinal[2][2])
+
+    tabGood :=[][]int{}
+    tabx0 := []int{1, 2, 3, 4}
+    tabx1 := []int{11, 13, 14, 5}
+    tabx2 := []int{11, 0, 15, 6}
+    tabx3 := []int{10, 9, 8, 7}
+    tabGood = append(tabGood, tabx0)
+    tabGood = append(tabGood, tabx1)
+    tabGood = append(tabGood, tabx2)
+    tabGood = append(tabGood, tabx3)
+
+    if solvabiliter(tabInit, tabGood, 4) == false{
+      fmt.Printf("Soory this is not a solavalble puzzle\n")
+      os.Exit(3)
+    }
+//    astar(tabInit, tabGood,  3)
     os.Exit(3)
   } else {
     fmt.Print("You need only one args.\n")
   }
-//  astar(tab, len)
+//  tab, len := parcing()
+
   return
 }

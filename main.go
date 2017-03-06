@@ -2,131 +2,50 @@ package main
 
 import (
   "fmt"
-  "io/ioutil"
   "strings"
   "strconv"
+  "io/ioutil"
   "os"
 )
 
-func check(e error) {
-    if e != nil {
-        panic(e)
-    }
-}
+func  createGood(len int) [][]int {
+  var x = 0
+  var y = 0
+  var t = 1
+  goodTab := make([][]int, len)
+  simpleTab := make([][]int, len)
 
-func checkTabInit(tabInit [][]int, len int) {
-  var i = 0
-  var j = 0
-  var k = 0
-  for i < len {
-    for j < len {
-      if tabInit[i][j] >= len * len {
-        fmt.Print("File is not well formated4\n")
-        os.Exit(3)
-      }
-      tmp := tabInit[i][j]
-      l := i
-      m := j
-      for l < len {
-          for m < len {
-            if tabInit[l][m] == tmp {
-              k += 1
-            }
-            if k > 1 {
-              fmt.Print("File is not well formated5\n")
-              os.Exit(3)
-            }
-            m++
-          }
-          m = 0
-        l++
-      }
-      k = 0
-      j++
-    }
-    j = 0
-    i++
-  }
-}
+//TODO reduire le tableau a chaque tour
 
-func finalTab(len int) ([][]int) {
-  var i = 0
-  var j = 0
-  tabFinal := [][]int{}
+  for x < len {
+    y = 0
+    simpleTab[x] = make([]int, len)
+    for y < len {
+      simpleTab[x][y] = t
+      y++
+      t++
+    }
+    x++
+  }
+  simpleTab[len - 1][len - 1] = 0
+  x = 0
+  fmt.Printf("simpleTab = %d",simpleTab)
 
-  for i < len {
-    var tabSemiFinal = make([]int, len)
-    for j < len {
-      tabSemiFinal[j] = 0
-      j++
+  for x < len {
+    var y = 0
+    goodTab[x] := make([]int, len)
+    if x == ) {
+      goodTab = append(goodTab, simpleTab[0])
     }
-    tabFinal = append(tabFinal, tabSemiFinal)
-    i++
+    if y == len - 1 {
+      goodTab[x][len - 1] = simpleTab[2][x]
+    }
+    if x == len - 1 {
+      goodTab[len][y] = simpleTab[]
+    }
+    x++
   }
-  i = 0
-  j = 0
-  var k = 0
-  var count = 1
-  tabFinal[i][j] = 1
-  for k < len * len - 2 {
-    count += 1
-    if j < len - 1 && tabFinal[i][j + 1] == 0 && (i == 0 || tabFinal[i - 1][j] != 0) {
-      j++
-      tabFinal[i][j] += count
-    } else if i < len - 1 && tabFinal[i + 1][j] == 0 {
-      i++
-      tabFinal[i][j] += count
-    } else if j > 0 && tabFinal[i][j - 1] == 0 {
-      j--
-      tabFinal[i][j] += count
-    } else if i > 0 && tabFinal[i - 1][j] == 0 {
-      i--
-      tabFinal[i][j] += count
-    }
-    k++
-  }
-  return tabFinal
-}
-
-func parsing(str []string) ([][]int, [][]int, int) {
-  length, _ := strconv.Atoi(str[1])
-  //fmt.Printf("%d\n", length)
-  tabFinal := finalTab(length)
-  var i = 0
-  var j = 0
-  var l = 0
-  var k = 2
-  tabInit := [][]int{}
-  for i < length {
-    //fmt.Print(str[k])
-    strFirstSplit := strings.Split(str[k], "#")
-    strSplit := strings.Split(strFirstSplit[0], " ")
-    var tabLigne = make([]int, length)
-    taille := len(strSplit)
-    for j < taille {
-      if strSplit[j] != "" {
-        nb,err := strconv.Atoi(strSplit[j])
-        if err != nil {
-          fmt.Print("File is not well formated3\n")
-          os.Exit(3)
-        }
-        tabLigne[l] = nb
-        l++
-      }
-        j++
-    }
-    if l != length {
-      fmt.Print("File is not well formated2\n")
-      os.Exit(3)
-    }
-    l = 0
-    j = 0
-    tabInit = append(tabInit, tabLigne)
-    k++
-    i++
-  }
-  checkTabInit(tabInit, length)
-  return tabInit, tabFinal, length
+  return goodTab
 }
 
 func main () {
@@ -143,8 +62,8 @@ func main () {
     datSplitted := strings.Split(datString, "\n")
     check, erreur := strconv.Atoi(datSplitted[1]);
     if datSplitted != nil && datSplitted[0][0] != '#' || erreur != nil || len(datSplitted) != check + 3 {
-        fmt.Printf("File is not well formated\n")
-        os.Exit(3)
+      fmt.Printf("File is not well formated\n")
+      os.Exit(3)
     }
 
     tabInit, tabFinal, len := parsing(datSplitted)
@@ -157,26 +76,27 @@ func main () {
     fmt.Printf("\nSecond:\n%d\n%d\n%d\n", tabFinal[1][0], tabFinal[1][1], tabFinal[1][2])
     fmt.Printf("\nThird:\n%d\n%d\n%d\n", tabFinal[2][0], tabFinal[2][1], tabFinal[2][2])
 
-    tabGood :=[][]int{}
-    tabx0 := []int{1, 2, 3, 4}
-    tabx1 := []int{11, 13, 14, 5}
-    tabx2 := []int{11, 0, 15, 6}
-    tabx3 := []int{10, 9, 8, 7}
-    tabGood = append(tabGood, tabx0)
-    tabGood = append(tabGood, tabx1)
-    tabGood = append(tabGood, tabx2)
-    tabGood = append(tabGood, tabx3)
+    tabGood := createGood(len)
+    return
+    // tabx0 := []int{1, 2, 3, 4}
+    // tabx1 := []int{11, 13, 14, 5}
+    // tabx2 := []int{11, 0, 15, 6}
+    // tabx3 := []int{10, 9, 8, 7}
+    // tabGood = append(tabGood, tabx0)
+    // tabGood = append(tabGood, tabx1)
+    // tabGood = append(tabGood, tabx2)
+    // tabGood = append(tabGood, tabx3)
 
     if solvabiliter(tabInit, tabGood, 4) == false{
       fmt.Printf("Soory this is not a solavalble puzzle\n")
       os.Exit(3)
     }
-//    astar(tabInit, tabGood,  3)
+    //    astar(tabInit, tabGood,  3)
     os.Exit(3)
-  } else {
-    fmt.Print("You need only one args.\n")
-  }
-//  tab, len := parcing()
+    } else {
+      fmt.Print("You need only one args.\n")
+    }
+    //  tab, len := parcing()
 
-  return
-}
+    return
+  }

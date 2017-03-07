@@ -48,49 +48,10 @@ func checkTabInit(tabInit [][]int, len int) {
   }
 }
 
-func finalTab(len int) ([][]int) {
-  var i = 0
-  var j = 0
-  tabFinal := [][]int{}
 
-  for i < len {
-    var tabSemiFinal = make([]int, len)
-    for j < len {
-      tabSemiFinal[j] = 0
-      j++
-    }
-    tabFinal = append(tabFinal, tabSemiFinal)
-    i++
-  }
-  i = 0
-  j = 0
-  var k = 0
-  var count = 1
-  tabFinal[i][j] = 1
-  for k < len * len - 2 {
-    count += 1
-    if j < len - 1 && tabFinal[i][j + 1] == 0 && (i == 0 || tabFinal[i - 1][j] != 0) {
-      j++
-      tabFinal[i][j] += count
-    } else if i < len - 1 && tabFinal[i + 1][j] == 0 {
-      i++
-      tabFinal[i][j] += count
-    } else if j > 0 && tabFinal[i][j - 1] == 0 {
-      j--
-      tabFinal[i][j] += count
-    } else if i > 0 && tabFinal[i - 1][j] == 0 {
-      i--
-      tabFinal[i][j] += count
-    }
-    k++
-  }
-  return tabFinal
-}
-
-func parsing(str []string) ([][]int, [][]int, int) {
+func parsing(str []string) ([][]int, int) {
   length, _ := strconv.Atoi(str[1])
   //fmt.Printf("%d\n", length)
-  tabFinal := finalTab(length)
   var i = 0
   var j = 0
   var l = 0
@@ -125,5 +86,5 @@ func parsing(str []string) ([][]int, [][]int, int) {
     i++
   }
   checkTabInit(tabInit, length)
-  return tabInit, tabFinal, length
+  return tabInit, length
 }

@@ -91,7 +91,6 @@ func findBest(sta []state) state  {
           }
           x++
         }
-        fmt.Printf("checKGood")
         return true
       }
       func shouldBe(tab [][]int, len int) Noeu  {
@@ -127,7 +126,6 @@ func findBest(sta []state) state  {
           }
           x++
         }
-        fmt.Printf("baddddddddd")
         tmp.y = 0
         tmp.x = 0
         return tmp
@@ -190,6 +188,7 @@ func findBest(sta []state) state  {
         openList[0].index = 0
         openList[0].pos = shouldBe(tab, len)
         openList[0].h = calculeManhattan(openList[0], goodTab)
+        var nbrState = 0
         var succes = false
 
         closeList := make([]state, 0)
@@ -204,10 +203,10 @@ func findBest(sta []state) state  {
   //          fmt.Printf("best ==%d\n", best)
 
             aff(best.grid, len)
-
+            nbrState++
             if checKGood(best.grid, goodTab, len) == true {
               succes = true
-              fmt.Printf("SUCCESSE")
+              fmt.Printf("SUCCESSE\n\nWe did %d differente state to find the solution.\n\n",nbrState)
               return 1
               } else {
             //    fmt.Printf("best == %d\n", best)
@@ -240,14 +239,14 @@ func findBest(sta []state) state  {
 
                     } else {
                       find := inListToFind(closeList, move[l])
-          //            fmt.Printf("maison=  find.g = %d find.h = %d && find.h = %d ,best.g = %d + 1:",find.g, find.h, find.h, best.g )
+                      fmt.Printf("maison=  find.g = %d find.h = %d && find.h = %d ,best.g = %d + 1:",find.g, find.h, find.h, best.g )
 
                       if find.g + find.h > find.h + best.g + 1 {
                         find.g = find.h + best.g + 1
-                  //      fmt.Printf("maison1 \n")
+                       fmt.Printf("maison1 \n")
                         err3 :=  inList(closeList, find.grid)
                         if err3 != 0 {
-                //          fmt.Printf("maison2 \n")
+                          fmt.Printf("maison2 \n")
                           closeList = removeList(closeList, find.index)
                           openList = append(openList, find)
                         }

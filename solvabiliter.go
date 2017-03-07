@@ -1,7 +1,7 @@
 package main
 
 import (
-  "fmt"
+//  "fmt"
 )
 
 func inversions(tab [][]int, len int) (int, int) {
@@ -20,7 +20,7 @@ func inversions(tab [][]int, len int) (int, int) {
       t++
     } else {
        blank = t
-       fmt.Printf("blank = %d\n", blank)
+    //   fmt.Printf("blank = %d\n", blank)
 
      }
       y++
@@ -40,7 +40,7 @@ func inversions(tab [][]int, len int) (int, int) {
     t++
   }
 
-  fmt.Printf("%d\n", tmp)
+  //fmt.Printf("%d\n", tmp)
   return nbr, blank
 
 }
@@ -49,22 +49,22 @@ func solvabiliter(tab [][]int, goodTab [][]int, len int) bool  {
 
   tabInversion, blankPosition := inversions(tab, len)
   goodTabInversieon, blankPosition1 := inversions(goodTab,len)
-  fmt.Printf("%d\n", blankPosition)
-  fmt.Printf("%d\n", blankPosition1)
+  //fmt.Printf("%d\n", blankPosition)
+  //fmt.Printf("%d\n", blankPosition1)
 
   if len % 2 == 0 {
 
     tabInversion =  tabInversion + (blankPosition / len)
     goodTabInversieon =  goodTabInversieon + (blankPosition1 / len) -  1
-    fmt.Printf("%d\n", tabInversion)
-    fmt.Printf("%d\n", goodTabInversieon)
+  //  fmt.Printf("%d\n", tabInversion)
+  //  fmt.Printf("%d\n", goodTabInversieon)
   }
 
   if tabInversion % 2 == goodTabInversieon % 2 {
-    fmt.Printf("solulebe")
+//    fmt.Printf("solulebe")
   return true
 }
-fmt.Printf("not solulebe")
+//fmt.Printf("not solulebe")
   return false
 }
 

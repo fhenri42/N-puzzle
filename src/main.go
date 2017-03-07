@@ -94,7 +94,7 @@ func  createGood( len int)[][]int  {
         fmt.Printf("\nSoory this is not a solavalble puzzle\n")
         os.Exit(3)
       }
-      astar(tabInit, tabGood,  3)
+      astar(tabInit, tabGood,  len)
       os.Exit(3)
       } else {
         fmt.Print("You need only one args.\n")

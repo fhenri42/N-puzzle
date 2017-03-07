@@ -1,7 +1,7 @@
 package main
 
 import (
-//  "fmt"
+  "fmt"
 )
 
 func inversions(tab [][]int, len int) (int, int) {
@@ -49,13 +49,12 @@ func solvabiliter(tab [][]int, goodTab [][]int, len int) bool  {
 
   tabInversion, blankPosition := inversions(tab, len)
   goodTabInversieon, blankPosition1 := inversions(goodTab,len)
-  //fmt.Printf("%d\n", blankPosition)
-  //fmt.Printf("%d\n", blankPosition1)
 
   if len % 2 == 0 {
 
     tabInversion =  tabInversion + (blankPosition / len)
-    goodTabInversieon =  goodTabInversieon + (blankPosition1 / len) -  1
+    goodTabInversieon = goodTabInversieon + (blankPosition1 / len)
+
   //  fmt.Printf("%d\n", tabInversion)
   //  fmt.Printf("%d\n", goodTabInversieon)
   }

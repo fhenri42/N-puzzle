@@ -7,8 +7,6 @@ SRC = src/astar.go \
 			src/rotation.go \
 			src/solvabiliter.go \
 
-
-
 all: $(NAME)
 
 $(NAME): $(SRC)

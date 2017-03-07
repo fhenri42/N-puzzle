@@ -31,25 +31,25 @@ func astar(tab [][]int, goodTab [][]int, len int) int  {
   openList[0].index = 0
   openList[0].pos = shouldBe(tab, len)
   openList[0].h = calculeManhattan(openList[0], goodTab)
-  var nbrState = 0
+  var nbrState = 1
+  var nbrMove = 0
+  var indexState = 1
   var succes = false
-
   closeList := make([]state, 0)
 
   for succes != true {
 
 
     //  fmt.Printf("openList == %d\n",openList);
-    for _, _ = range openList {
+    for index, _ := range openList {
 
       best := findBest(openList)
       //          fmt.Printf("best ==%d\n", best)
-
+      if (index > indexState ) { indexState = index}
       aff(best.grid, len)
-      nbrState++
       if checKGood(best.grid, goodTab, len) == true {
         succes = true
-        fmt.Printf("SUCCESSE\n\nWe did %d differente state to find the solution.\n\n",nbrState)
+        fmt.Printf("SUCCESSE\n\nWe did %d differente state, and %d move, to find the solution.\nThe maximum state in the memory at the same time was: %d\n\n",nbrState, nbrMove, indexState)
         return 1
         } else {
           //    fmt.Printf("best == %d\n", best)
@@ -62,7 +62,7 @@ func astar(tab [][]int, goodTab [][]int, len int) int  {
           var l = 0
 
           for l < cr {
-
+            nbrMove ++
             //          fmt.Printf("move ==%d\n",move[l])
             err := inList(openList, move[l])
             err1 := inList(closeList, move[l])
@@ -79,6 +79,7 @@ func astar(tab [][]int, goodTab [][]int, len int) int  {
               newList.pos = shouldBe(move[l],best.len)
               newList.h = calculeManhattan(newList, goodTab)
               openList = append(openList, newList)
+              nbrState++
 
               } else {
                 find := inListToFind(closeList, move[l])
@@ -102,7 +103,6 @@ func astar(tab [][]int, goodTab [][]int, len int) int  {
       }
       return 0
     }
-
 
     func  aff(tab [][]int, len int)  {
       var x = 0

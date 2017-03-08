@@ -19,6 +19,30 @@ type state struct {
   parent Noeu
   pos Noeu
 }
+func myCopy(best state) state  {
+  var tmp  state
+  tmp.grid = best.grid
+  tmp.g = best.g
+  tmp.len = best.len
+  tmp.parent.x = best.parent.x
+  tmp.parent.y = best.parent.y
+  tmp.index = best.index
+  tmp.pos = best.pos
+  tmp.h = best.h
+  return tmp
+}
+func addToStart(closeList []state, best state) []state  {
+  var y = 1
+  var t = 0
+  newClose := make([]state, len(closeList) + 1)
+  newClose[0] = myCopy(best)
+  for y < len(closeList) {
+    newClose[y] = myCopy(closeList[t])
+    y++
+    t++
+  }
+ return newClose
+}
 
 func astar(tab [][]int, goodTab [][]int, len int) int  {
 
@@ -30,7 +54,7 @@ func astar(tab [][]int, goodTab [][]int, len int) int  {
   openList[0].parent.y = -2
   openList[0].index = 0
   openList[0].pos = shouldBe(tab, len)
-  openList[0].h = calculeManhattan(openList[0], goodTab)
+  openList[0].h = calculeManhattan(openList[0], goodTab)  * 10
   var nbrState = 1
   var nbrMove = 0
   var indexState = 1
@@ -39,34 +63,27 @@ func astar(tab [][]int, goodTab [][]int, len int) int  {
 
   for succes != true {
 
-
-    //  fmt.Printf("openList == %d\n",openList);
     for index, _ := range openList {
 
       best := findBest(openList)
-      //          fmt.Printf("best ==%d\n", best)
       if (index > indexState ) { indexState = index}
-      aff(best.grid, len)
+        aff(best.grid, len)
       if checKGood(best.grid, goodTab, len) == true {
         succes = true
         fmt.Printf("SUCCESSE\n\nWe did %d differente state, and %d move, to find the solution.\nThe maximum state in the memory at the same time was: %d\n\n",nbrState, nbrMove, indexState)
         return 1
         } else {
-          //    fmt.Printf("best == %d\n", best)
-          //    fmt.Printf("openList == %d\n", openList)
+
           openList = removeList(openList, best.index)
-          //    fmt.Printf("openList == %d\n, best.index == %d\n", openList,best.index)
           move, cr := MoveGrid(best)
           closeList = append(closeList, best)
-          //  fmt.Printf("closeList == %d\n", closeList)
+        //  closeList = addToStart(closeList, best)
+
           var l = 0
 
           for l < cr {
-            nbrMove ++
-            //          fmt.Printf("move ==%d\n",move[l])
             err := inList(openList, move[l])
             err1 := inList(closeList, move[l])
-
             if err == 0 && err1 == 0  {
 
               var newList state
@@ -77,23 +94,29 @@ func astar(tab [][]int, goodTab [][]int, len int) int  {
               newList.len = best.len
               newList.index = indexShouldBe(openList)
               newList.pos = shouldBe(move[l],best.len)
-              newList.h = calculeManhattan(newList, goodTab)
+              newList.h = calculeManhattan(newList, goodTab) * 10
               openList = append(openList, newList)
               nbrState++
 
               } else {
-                find := inListToFind(closeList, move[l])
-                fmt.Printf("maison=  find.g = %d find.h = %d && find.h = %d ,best.g = %d + 1:",find.g, find.h, find.h, best.g )
+                nbrMove ++
+//                fmt.Printf("after the else\n")
 
-                if find.g + find.h > find.h + best.g + 1 {
-                  find.g = find.h + best.g + 1
-                  fmt.Printf("maison1 \n")
-                  err3 :=  inList(closeList, find.grid)
-                  if err3 != 0 {
-                    fmt.Printf("maison2 \n")
-                    closeList = removeList(closeList, find.index)
-                    openList = append(openList, find)
-                  }
+                found := inListToFind(closeList, move[l])
+                if found.len == 0 {
+                  found = inListToFind(openList, move[l])
+                  //fmt.Printf("aoeuaoeuoeuaoeuaoeuaoe%d\n")
+                }
+              //  fmt.Printf("found == %d\n",found.g)
+                if found.g > best.g + 1 {
+                  found.g = best.g + 1
+                  found.parent.x = best.pos.x
+                  found.parent.y = best.pos.y
+                  fmt.Printf("found.index == %d\n",found.index)
+                  closeList = removeList(closeList, found.index)
+                //    fmt.Printf("in the if after the elseaoeuaoeu\n")
+                    openList = append(openList, found)
+
                 }
               }
               l++

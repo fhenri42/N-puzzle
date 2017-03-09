@@ -1,6 +1,8 @@
 package main
 
-import ()
+import (
+//  "fmt"
+)
 
 func findBest(sta []state) state  {
 
@@ -13,41 +15,45 @@ func findBest(sta []state) state  {
 
 func inList(aList []state, bList [][]int) int {
 
-  if len(aList) == 0  {
-    return  0
-  }
-  for _,list := range aList {
+  if len(aList) == 0  { return  0 }
+  var toNo = 0
+  for _, list := range aList {
+    toNo = 0
     var x = 0
-    for x < len(list.grid) {
+    for x < list.len {
       var y = 0
-      for y < len(list.grid[x]) {
-        if list.grid[x][y] != bList[x][y] {
-          return 0
+      for y < list.len {
+        if list.grid[x][y] == bList[x][y] {
+          toNo++
         }
         y++
       }
       x++
     }
+    if toNo == list.len * list.len { return 1 }
   }
-  return 1
+  return 0
 }
 
 func inListToFind(aList []state, bList [][]int) state {
 
+  var toNo = 0
+  var tmp state
   for _,list := range aList {
     var x = 0
     for x < len(list.grid) {
       var y = 0
       for y < len(list.grid[x]) {
-        if list.grid[x][y] != bList[x][y] {
-          return list
+        if list.grid[x][y] == bList[x][y] {
+          toNo++
         }
         y++
       }
       x++
     }
+    if toNo == list.len * list.len { return list }
   }
-  return aList[0]
+  return tmp
 }
 
 func checKGood( tab [][]int, goodTab[][]int, len int) bool  {
@@ -81,7 +87,8 @@ func shouldBe(tab [][]int, len int) Noeu  {
   return tmp
 }
 
-func removeList(openList []state, index int)[]state  {
+func removeList(openList []state, index int) []state  {
+
   var x = 0
   newList := make([]state, 0)
   for x < len(openList) {
@@ -92,8 +99,6 @@ func removeList(openList []state, index int)[]state  {
   }
   x = 0
   for x < len(newList) {
-//       fmt.Printf("list = %d\n",list.index)
-//       fmt.Printf("index = %d\n", index)
      newList[x].index = x
      x++
   }

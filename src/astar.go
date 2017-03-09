@@ -9,7 +9,6 @@ type Noeu struct {
   y int
 }
 
-
 type state struct {
   grid [][]int
   h int
@@ -44,17 +43,18 @@ func addToStart(closeList []state, best state) []state  {
  return newClose
 }
 
-func astar(tab [][]int, goodTab [][]int, len int) int  {
+func astar(tab [][]int, goodTab [][]int, len int, choice int) int  {
 
   openList := make([]state, 1)
   openList[0].grid  = tab
   openList[0].g = 0
-  openList[0].len = len
+  openList[0].len = len;
   openList[0].parent.x = -2
   openList[0].parent.y = -2
   openList[0].index = 0
   openList[0].pos = shouldBe(tab, len)
-  openList[0].h = calculeManhattan(openList[0], goodTab)  * 10
+  if choice == 1 { openList[0].h = calculeManhattan(openList[0], goodTab)  * 10
+  } else if choice == 2 { openList[0].h = misplaced(openList[0], goodTab)  * 10 } else { openList[0].h = h_row_column(openList[0], goodTab)  * 10 }
   var nbrState = 1
   var nbrMove = 0
   var indexState = 1
@@ -63,14 +63,20 @@ func astar(tab [][]int, goodTab [][]int, len int) int  {
 
   for succes != true {
 
-    for index, _ := range openList {
+    for index := range openList {
 
       best := findBest(openList)
+
       if (index > indexState ) { indexState = index}
-        aff(best.grid, len)
       if checKGood(best.grid, goodTab, len) == true {
         succes = true
-        fmt.Printf("SUCCESSE\n\nWe did %d differente state, and %d move, to find the solution.\nThe maximum state in the memory at the same time was: %d\n\n",nbrState, nbrMove, indexState)
+        var nbrMoveRec = 1
+        for _, close := range closeList {
+          aff(close.grid, len, nbrMoveRec)
+          nbrMoveRec++
+        }
+        aff(best.grid, len, nbrMoveRec)
+        fmt.Printf("\033[1;32mSUCCESS !\033[m\n\n\033[32;35mWe did \033[m\033[32;25m%d\033[m \033[32;35mdifferente state (comlexity is size).\nNumber of move to find the solution: \033[m \033[32;25m%d\033[m \033[32;35m\nNumber of move from intiale state to the solution: \033[m \033[32;25m%d\033[m \033[32;35m\nThe maximum state in the memory (complexity in time) at the same time was: \033[m\033[32;25m%d\033[m\n\n",nbrState, nbrMove,nbrMoveRec,indexState)
         return 1
         } else {
 
@@ -81,6 +87,7 @@ func astar(tab [][]int, goodTab [][]int, len int) int  {
           var l = 0
 
           for l < cr {
+            nbrMove ++
             err := inList(openList, move[l])
             err1 := inList(closeList, move[l])
             if err == 0 && err1 == 0  {
@@ -93,21 +100,20 @@ func astar(tab [][]int, goodTab [][]int, len int) int  {
               newList.len = best.len
               newList.index = indexShouldBe(openList)
               newList.pos = shouldBe(move[l],best.len)
-              newList.h = calculeManhattan(newList, goodTab) * 10
+              if choice == 1 { newList.h = calculeManhattan(newList, goodTab) * 10
+              } else if choice == 2 { newList.h = misplaced(newList, goodTab) * 10
+              } else { newList.h = h_row_column(newList, goodTab) * 10 }
               openList = append(openList, newList)
               nbrState++
-
               } else {
-                nbrMove ++
+
                 found := inListToFind(closeList, move[l])
-                if found.len == 0 { found = inListToFind(openList, move[l]) }
+                if found.len == 0 {found = inListToFind(openList, move[l]) }
                 if found.g  > best.g + 1 {
                   found.g = best.g + 1
                   found.parent.x = best.pos.x
                   found.parent.y = best.pos.y
-                  fmt.Printf("found.index == %d\n",found.index)
                   if err1 == 0 {
-                     fmt.Printf("in the if after the elseaoeuaoeu\n")
                     closeList = removeList(closeList, found.index)
                     openList = append(openList, found)
                   }
@@ -121,13 +127,12 @@ func astar(tab [][]int, goodTab [][]int, len int) int  {
       return 0
     }
 
-    func  aff(tab [][]int, len int)  {
+    func  aff(tab [][]int, len int, state int)  {
       var x = 0
-      fmt.Printf("====================\n")
+      fmt.Printf("reconstruct path: \033[32;25m%d\033[m\n\n", state)
       for x < len {
-        fmt.Printf("%d\n",tab[x])
+        fmt.Printf("\033[1;33m%d\033[m\n",tab[x])
         x++
       }
-      fmt.Printf("====================\n")
-
+      fmt.Printf("\n")
     }

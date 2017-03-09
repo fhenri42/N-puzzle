@@ -1,8 +1,6 @@
 package main
 
-import (
-//  "fmt"
-)
+import ()
 
 func findBest(sta []state) state  {
 

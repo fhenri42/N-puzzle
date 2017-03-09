@@ -20,8 +20,6 @@ func inversions(tab [][]int, len int) (int, int) {
       t++
     } else {
        blank = t
-    //   fmt.Printf("blank = %d\n", blank)
-
      }
       y++
     }
@@ -39,8 +37,6 @@ func inversions(tab [][]int, len int) (int, int) {
     nbr = nbr + y
     t++
   }
-
-  //fmt.Printf("%d\n", tmp)
   return nbr, blank
 
 }
@@ -54,19 +50,10 @@ func solvabiliter(tab [][]int, goodTab [][]int, len int) bool  {
 
     tabInversion =  tabInversion + (blankPosition / len)
     goodTabInversieon = goodTabInversieon + (blankPosition1 / len)
-
-  //  fmt.Printf("%d\n", tabInversion)
-  //  fmt.Printf("%d\n", goodTabInversieon)
   }
 
   if tabInversion % 2 == goodTabInversieon % 2 {
-//    fmt.Printf("solulebe")
   return true
 }
-//fmt.Printf("not solulebe")
   return false
 }
-
-//If the grid width is odd, then the number of inversions in a solvable situation is even.
-//If the grid width is even, and the blank is on an even row counting from the bottom (second-last, fourth-last etc), then the number of inversions in a solvable situation is odd.
-//If the grid width is even, and the blank is on an odd row counting from the bottom (last, third-last, fifth-last etc) then the number of inversions in a solvable situation is even.

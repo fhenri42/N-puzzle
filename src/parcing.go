@@ -20,7 +20,7 @@ func checkTabInit(tabInit [][]int, len int) {
   for i < len {
     for j < len {
       if tabInit[i][j] >= len * len {
-        fmt.Print("File is not well formated4\n")
+        fmt.Print("\n\033[1;31mFile is not well formated\033[m\n")
         os.Exit(3)
       }
       tmp := tabInit[i][j]
@@ -32,7 +32,7 @@ func checkTabInit(tabInit [][]int, len int) {
               k += 1
             }
             if k > 1 {
-              fmt.Print("File is not well formated5\n")
+              fmt.Print("\n\033[1;31mFile is not well formated\033[m\n")
               os.Exit(3)
             }
             m++
@@ -51,14 +51,13 @@ func checkTabInit(tabInit [][]int, len int) {
 
 func parsing(str []string) ([][]int, int) {
   length, _ := strconv.Atoi(str[1])
-  //fmt.Printf("%d\n", length)
   var i = 0
   var j = 0
   var l = 0
   var k = 2
   tabInit := [][]int{}
+  
   for i < length {
-    //fmt.Print(str[k])
     strFirstSplit := strings.Split(str[k], "#")
     strSplit := strings.Split(strFirstSplit[0], " ")
     var tabLigne = make([]int, length)
@@ -67,7 +66,7 @@ func parsing(str []string) ([][]int, int) {
       if strSplit[j] != "" {
         nb,err := strconv.Atoi(strSplit[j])
         if err != nil {
-          fmt.Print("File is not well formated3\n")
+          fmt.Print("\n\033[1;31mFile is not well formated\033[m\n")
           os.Exit(3)
         }
         tabLigne[l] = nb
@@ -76,7 +75,7 @@ func parsing(str []string) ([][]int, int) {
         j++
     }
     if l != length {
-      fmt.Print("File is not well formated2\n")
+      fmt.Print("\n\033[1;31mFile is not well formated\033[m\n")
       os.Exit(3)
     }
     l = 0

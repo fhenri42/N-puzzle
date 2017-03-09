@@ -54,7 +54,7 @@ func astar(tab [][]int, goodTab [][]int, len int) int  {
   openList[0].parent.y = -2
   openList[0].index = 0
   openList[0].pos = shouldBe(tab, len)
-  openList[0].h = calculeManhattan(openList[0], goodTab)  * 10
+  openList[0].h = misplaced(openList[0], goodTab)  * 10
   var nbrState = 1
   var nbrMove = 0
   var indexState = 1
@@ -94,7 +94,7 @@ func astar(tab [][]int, goodTab [][]int, len int) int  {
               newList.len = best.len
               newList.index = indexShouldBe(openList)
               newList.pos = shouldBe(move[l],best.len)
-              newList.h = calculeManhattan(newList, goodTab) * 10
+              newList.h = misplaced(newList, goodTab) * 10
               openList = append(openList, newList)
               nbrState++
 

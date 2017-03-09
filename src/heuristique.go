@@ -7,6 +7,7 @@ import (
 func getPos(nb int, tab[][]int, len int) Noeu  {
   var x = 0
   var tmp Noeu
+
   for  x < len {
     var y = 0
     for y < len {
@@ -52,25 +53,51 @@ func calculeManhattan(open state, goodTab[][]int) int {
 */
 
 func isMisplaced(nb int, grid1[][]int, grid2[][]int, size int) int {
-  var tmp Noeu
-  var tmp2 Noeu
   var misplaced = 1
 
-  tmp1 = getPos(nb, grid1, size)
-  tmp2 = getPos(nb, grid2, size)
+  var tmp1 = getPos(nb, grid1, size)
+  var tmp2 = getPos(nb, grid2, size)
   if (tmp1.x == tmp2.x && tmp1.y == tmp2.y) {
     misplaced = 0
   }
   return misplaced
 }
 
-func misplaced(grid1[][]int, grid2[][]int, size int) int {
+func misplaced(open state, grid2[][]int) int {
   var res = 0
   var i = 0
 
-  while (i < size * size)
-  {
-    res += isMisplaced(i, grid1, grid2, size)
+  for i < open.len * open.len {
+    res += isMisplaced(i, open.grid, grid2, open.len)
+    i++
+  }
+  return res
+}
+
+/*
+** row_column Heuristic
+*/
+
+func get_out_row_column(i int, grid1[][]int, grid2[][]int, size int) int {
+  var p1 = getPos(i, grid1, size)
+  var p2 = getPos(i, grid2, size)
+  var out_row = 0
+  var out_column = 0
+
+  if (p1.x != p2.x) {
+    out_row = 1
+  }
+  if (p1.y != p2.y) {
+    out_column = 1
+  }
+  return out_column + out_row
+}
+
+func h_row_column(open state, grid2[][]int) int {
+  var res = 0
+  var i = 0
+  for i < open.len * open.len {
+    res += get_out_row_column(i, open.grid, grid2, open.len)
     i++
   }
   return res

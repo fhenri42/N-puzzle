@@ -10,7 +10,7 @@ SRC = src/astar.go \
 all: $(NAME)
 
 $(NAME): $(SRC)
-	go build -o n-puzzle $(SRC)
+	go build -o  n-puzzle $(SRC)
 
 clean:
 	@echo 'No object files to delete'

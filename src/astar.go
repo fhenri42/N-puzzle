@@ -54,7 +54,7 @@ func astar(tab [][]int, goodTab [][]int, len int) int  {
   openList[0].parent.y = -2
   openList[0].index = 0
   openList[0].pos = shouldBe(tab, len)
-  openList[0].h = misplaced(openList[0], goodTab)  * 10
+  openList[0].h = calculeManhattan(openList[0], goodTab)  * 10
   var nbrState = 1
   var nbrMove = 0
   var indexState = 1
@@ -77,7 +77,6 @@ func astar(tab [][]int, goodTab [][]int, len int) int  {
           openList = removeList(openList, best.index)
           move, cr := MoveGrid(best)
           closeList = append(closeList, best)
-        //  closeList = addToStart(closeList, best)
 
           var l = 0
 
@@ -94,29 +93,24 @@ func astar(tab [][]int, goodTab [][]int, len int) int  {
               newList.len = best.len
               newList.index = indexShouldBe(openList)
               newList.pos = shouldBe(move[l],best.len)
-              newList.h = misplaced(newList, goodTab) * 10
+              newList.h = calculeManhattan(newList, goodTab) * 10
               openList = append(openList, newList)
               nbrState++
 
               } else {
                 nbrMove ++
-//                fmt.Printf("after the else\n")
-
                 found := inListToFind(closeList, move[l])
-                if found.len == 0 {
-                  found = inListToFind(openList, move[l])
-                  //fmt.Printf("aoeuaoeuoeuaoeuaoeuaoe%d\n")
-                }
-              //  fmt.Printf("found == %d\n",found.g)
-                if found.g > best.g + 1 {
+                if found.len == 0 { found = inListToFind(openList, move[l]) }
+                if found.g  > best.g + 1 {
                   found.g = best.g + 1
                   found.parent.x = best.pos.x
                   found.parent.y = best.pos.y
                   fmt.Printf("found.index == %d\n",found.index)
-                  closeList = removeList(closeList, found.index)
-                //    fmt.Printf("in the if after the elseaoeuaoeu\n")
+                  if err1 == 0 {
+                     fmt.Printf("in the if after the elseaoeuaoeu\n")
+                    closeList = removeList(closeList, found.index)
                     openList = append(openList, found)
-
+                  }
                 }
               }
               l++

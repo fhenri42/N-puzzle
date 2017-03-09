@@ -61,6 +61,22 @@ func  createGood( len int)[][]int  {
   func main () {
 
     if 2 == len(os.Args) {
+      var i int
+      fmt.Print("Bienvenu sur Npuzzle, Choisissez l'heuristic que vous souhaiter utiliser.\n\nTapez 1 pour utiliser Manhathan\nTapez 2 pour utiliser Misplaced\nTapez 3 pour utiliser Get column\n\nHave fun!\n\nVotre choix:(1, 2, 3) => ")
+    _, err2 := fmt.Scanf("%d", &i)
+
+    if err2 != nil {
+      fmt.Print("Desoler, ce choix n'est pas possible.\n")
+      os.Exit(3)
+    }
+    if i < 1 || i > 3 {
+      fmt.Print("Desoler, vous ne pouvez choisir que parmis les 3 choix suivant:\nTapez 1 pour utiliser Manhathan\nTapez 2 pour utiliser Misplaced\nTapez 3 pour utiliser Get column\n\nHave fun!\n\nVotre choix:(1, 2, 3) => ")
+      _, err3 := fmt.Scanf("%d", &i)
+      if err3 != nil || i < 1 || i > 3 {
+        fmt.Print("Desoler, ce choix n'est pas possible.\n")
+        os.Exit(3)
+      }
+    }
       dat, err := ioutil.ReadFile(os.Args[1])
       if err != nil {
         fmt.Print("No such file or directory\n")
@@ -94,7 +110,7 @@ func  createGood( len int)[][]int  {
         fmt.Printf("\nSoory this is not a solavalble puzzle\n")
         os.Exit(3)
       }
-      astar(tabInit, tabGood,  len)
+      astar(tabInit, tabGood,  len, i)
       os.Exit(3)
       } else {
         fmt.Print("You need only one args.\n")

@@ -44,7 +44,7 @@ func addToStart(closeList []state, best state) []state  {
  return newClose
 }
 
-func astar(tab [][]int, goodTab [][]int, len int) int  {
+func astar(tab [][]int, goodTab [][]int, len int, choice int) int  {
 
   openList := make([]state, 1)
   openList[0].grid  = tab
@@ -54,7 +54,13 @@ func astar(tab [][]int, goodTab [][]int, len int) int  {
   openList[0].parent.y = -2
   openList[0].index = 0
   openList[0].pos = shouldBe(tab, len)
-  openList[0].h = misplaced(openList[0], goodTab)  * 10
+  if choice == 1 {
+    openList[0].h = calculeManhattan(openList[0], goodTab)  * 10
+  } else if choice == 2 {
+    openList[0].h = misplaced(openList[0], goodTab)  * 10
+  } else {
+    openList[0].h = h_row_column(openList[0], goodTab)  * 10
+  }
   var nbrState = 1
   var nbrMove = 0
   var indexState = 1
@@ -94,7 +100,13 @@ func astar(tab [][]int, goodTab [][]int, len int) int  {
               newList.len = best.len
               newList.index = indexShouldBe(openList)
               newList.pos = shouldBe(move[l],best.len)
-              newList.h = misplaced(newList, goodTab) * 10
+              if choice == 1 {
+                newList.h = calculeManhattan(newList, goodTab) * 10
+              } else if choice == 2 {
+                newList.h = misplaced(newList, goodTab) * 10
+              } else {
+                newList.h = h_row_column(newList, goodTab) * 10
+              }
               openList = append(openList, newList)
               nbrState++
 

@@ -73,10 +73,10 @@ func astar(tab [][]int, goodTab [][]int, len int, choice int) int  {
 
       best := findBest(openList)
       if (index > indexState ) { indexState = index}
-        aff(best.grid, len)
+        aff(best.grid, len, nbrState)
       if checKGood(best.grid, goodTab, len) == true {
         succes = true
-        fmt.Printf("SUCCESSE\n\nWe did %d differente state, and %d move, to find the solution.\nThe maximum state in the memory at the same time was: %d\n\n",nbrState, nbrMove, indexState)
+        fmt.Printf("\033[1;32mSUCCESS !\033[m\n\n\033[32;35mWe did \033[m\033[32;25m%d\033[m \033[32;35mdifferente state, and\033[m \033[32;25m%d\033[m \033[32;35mmove, to find the solution.\nThe maximum state in the memory at the same time was: \033[m\033[32;25m%d\033[m\n\n",nbrState, nbrMove, indexState)
         return 1
         } else {
 
@@ -139,13 +139,12 @@ func astar(tab [][]int, goodTab [][]int, len int, choice int) int  {
       return 0
     }
 
-    func  aff(tab [][]int, len int)  {
+    func  aff(tab [][]int, len int, state int)  {
       var x = 0
-      fmt.Printf("====================\n")
+      fmt.Printf("State: \033[32;25m%d\033[m\n\n", state)
       for x < len {
-        fmt.Printf("%d\n",tab[x])
+        fmt.Printf("\033[1;33m%d\033[m\n",tab[x])
         x++
       }
-      fmt.Printf("====================\n")
-
+      fmt.Printf("\n")
     }

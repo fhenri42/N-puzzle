@@ -7,7 +7,6 @@ import (
   "io/ioutil"
   "os"
 )
-//TODO a comprendre
 func  createGood( len int)[][]int  {
   doubleLen := len * len
   var cur = 1
@@ -61,34 +60,35 @@ func  createGood( len int)[][]int  {
   func main () {
 
     if 2 == len(os.Args) {
-      var i int
-      fmt.Print("Bienvenu sur Npuzzle, Choisissez l'heuristic que vous souhaiter utiliser.\n\nTapez 1 pour utiliser Manhathan\nTapez 2 pour utiliser Misplaced\nTapez 3 pour utiliser Get column\n\nHave fun!\n\nVotre choix:(1, 2, 3) => ")
-    _, err2 := fmt.Scanf("%d", &i)
-
-    if err2 != nil {
-      fmt.Print("Desoler, ce choix n'est pas possible.\n")
-      os.Exit(3)
-    }
-    if i < 1 || i > 3 {
-      fmt.Print("Desoler, vous ne pouvez choisir que parmis les 3 choix suivant:\nTapez 1 pour utiliser Manhathan\nTapez 2 pour utiliser Misplaced\nTapez 3 pour utiliser Get column\n\nHave fun!\n\nVotre choix:(1, 2, 3) => ")
-      _, err3 := fmt.Scanf("%d", &i)
-      if err3 != nil || i < 1 || i > 3 {
-        fmt.Print("Desoler, ce choix n'est pas possible.\n")
-        os.Exit(3)
-      }
-    }
       dat, err := ioutil.ReadFile(os.Args[1])
       if err != nil {
-        fmt.Print("No such file or directory\n")
+        fmt.Print("\n\033[1;31mNo such file or directory\033[m\n")
         os.Exit(3)
       }
       check(err)
+
+      var i int
+      fmt.Print("\n\n\033[1;32mWelcome to Npuzzle !\033[m\n\n\033[1;36mChoose the heuristic that you wish to use.\033[m\n\n\033[1;33mPress 1 to use Manhattan\033[m\n\033[1;33mPress 2 to use Misplaced\033[m\n\033[1;33mPress 3 to use Get column\033[m\n\n\033[32;35mHave fun!\033[m\n\n\033[1;32mYour choice:(1, 2, 3) => \033[m")
+    _, err2 := fmt.Scanf("%d", &i)
+
+    if err2 != nil {
+      fmt.Print("\n\033[1;31mSorry, this choice is not possible.\033[m\n")
+      os.Exit(3)
+    }
+    if i < 1 || i > 3 {
+      fmt.Print("\n\n\033[1;36mSorry, You can only pick those 3 choices:\033[m\n\n\033[1;33mPress 1 to use Manhattan\033[m\n\033[1;33mPress 2 to use Misplaced\033[m\n\033[1;33mPress 3 to use Get column\033[m\n\n\033[32;35mHave fun!\033[m\n\n\033[1;32mYour choice:(1, 2, 3) => \033[m")
+      _, err3 := fmt.Scanf("%d", &i)
+      if err3 != nil || i < 1 || i > 3 {
+        fmt.Print("\n\033[1;31mSorry, this choice is not possible.\033[m\n")
+        os.Exit(3)
+      }
+    }
 
       datString := string(dat)
       datSplitted := strings.Split(datString, "\n")
       check, erreur := strconv.Atoi(datSplitted[1]);
       if datSplitted != nil && datSplitted[0][0] != '#' || erreur != nil || len(datSplitted) != check + 3 {
-        fmt.Printf("File is not well formated\n")
+        fmt.Printf("\n\033[1;31mFile is not well formated\033[m\n")
         os.Exit(3)
       }
       tabInit, len := parsing(datSplitted)
@@ -107,15 +107,13 @@ func  createGood( len int)[][]int  {
 
       tabGood := createGood(len)
       if solvabiliter(tabInit, tabGood, len) == false{
-        fmt.Printf("\nSoory this is not a solavalble puzzle\n")
+        fmt.Printf("\n\033[1;31mSorry this is not a solvable puzzle\033[m\n\n")
         os.Exit(3)
       }
       astar(tabInit, tabGood,  len, i)
       os.Exit(3)
       } else {
-        fmt.Print("You need only one args.\n")
+        fmt.Print("\n\033[1;31mYou need only one args.\033[m\n")
       }
-      //  tab, len := parcing()
-
       return
     }

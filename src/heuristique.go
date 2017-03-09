@@ -24,6 +24,10 @@ func getPos(nb int, tab[][]int, len int) Noeu  {
   return tmp
 }
 
+/*
+** Manhattan Heuristic
+*/
+
 func getDist(nb int, open state, goodTab[][]int)  int{
   tmp1 := getPos(nb, open.grid, open.len)
   tmp2 := getPos(nb, goodTab, open.len)
@@ -38,6 +42,36 @@ func calculeManhattan(open state, goodTab[][]int) int {
   for x < len(goodTab) * len(goodTab) {
     res += getDist(x, open, goodTab)
     x++
+  }
+  return res
+}
+
+
+/*
+** Misplaced Heuristic
+*/
+
+func isMisplaced(nb int, grid1[][]int, grid2[][]int, size int) int {
+  var tmp Noeu
+  var tmp2 Noeu
+  var misplaced = 1
+
+  tmp1 = getPos(nb, grid1, size)
+  tmp2 = getPos(nb, grid2, size)
+  if (tmp1.x == tmp2.x && tmp1.y == tmp2.y) {
+    misplaced = 0
+  }
+  return misplaced
+}
+
+func misplaced(grid1[][]int, grid2[][]int, size int) int {
+  var res = 0
+  var i = 0
+
+  while (i < size * size)
+  {
+    res += isMisplaced(i, grid1, grid2, size)
+    i++
   }
   return res
 }

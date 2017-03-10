@@ -35,9 +35,9 @@ func inList(aList []state, bList [][]int) int {
 
 func inListToFind(aList []state, bList [][]int) state {
 
-  var toNo = 0
   var tmp state
   for _,list := range aList {
+    var toNo = 0
     var x = 0
     for x < len(list.grid) {
       var y = 0
@@ -54,7 +54,7 @@ func inListToFind(aList []state, bList [][]int) state {
   return tmp
 }
 
-func checKGood( tab [][]int, goodTab[][]int, len int) bool  {
+func checKGood(tab [][]int, goodTab[][]int, len int) bool  {
   var x = 0
   for x < len {
     var y = 0
@@ -88,6 +88,7 @@ func shouldBe(tab [][]int, len int) Noeu  {
 func removeList(openList []state, index int) []state  {
 
   var x = 0
+
   newList := make([]state, 0)
   for x < len(openList) {
     if x != index {
